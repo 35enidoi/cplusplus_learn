@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <unistd.h>
 
 class BracketNotMatch : public std::exception {
 public:
@@ -48,7 +49,7 @@ private:
             throw MemoryPosFlow();
         } else {
             cursor_pos += 1;
-            if (memory.size() < cursor_pos-1) {
+            if ((memory.size()-1) < cursor_pos) {
                 memory.push_back(0);
             }
         }
@@ -96,12 +97,16 @@ private:
     }
 
     void memory_input_char () {
+        // 入力文字がないとき
         if (inputs.empty()) {
+            // 入力文字がEOFまで行ったとき
             if (!(std::cin >> inputs)) {
+                // 入力文字の中身がなく、EOFの時
                 if (inputs.empty() && std::cin.eof()) {
                     throw InputisNothing();
                 }
             }
+
         memory[cursor_pos] = static_cast<int>(inputs.back());
         inputs.pop_back();
         }
@@ -166,14 +171,18 @@ public:
             }
             program_pos++;
         }
-        std::cout << std::endl;
-        for (int i; i < memory.size(); i++) {
-            std::cout << memory[i] << ' ';
-        }
     }
 };
 
 int main() {
-    BrainFuck brain = BrainFuck("++++++++[>++++++++<-]>+.");
+    std::string input;
+
+    if (isatty(STDIN_FILENO)) {
+        // 端末(キーボード)からの実行時
+        std::cout << ">>> ";
+    }
+    std::cin >> input;
+
+    BrainFuck brain = BrainFuck(input);
     brain.execute();
 }
