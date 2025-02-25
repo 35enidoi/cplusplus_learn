@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unordered_map>
 #include <vector>
 #include <string>
 #include <stdexcept>
@@ -7,7 +8,7 @@
 class BracketNotMatch : public std::exception {
 public:
     const char* what() const noexcept override {
-        return "The number of brackets is incorrect.";
+        return "The number of matches brackets is incorrect.";
     }
 };
 
@@ -35,14 +36,15 @@ public:
 class BrainFuck
 {
 private:
-    const unsigned int memory_limit = 2147483647;
+    const unsigned int memory_limit = 1 << 20;  // 1MBくらい
     const unsigned int memory_num_limit = 255;
     std::string program;
     std::string inputs;
     int program_pos = 0;
-    unsigned int cursor_pos = 0;
-    std::vector<int> memory{0, 0, 0};
-    std::vector<int> bracket_stashs{};
+    int cursor_pos = 0;
+    std::vector<unsigned char> memory{0, 0, 0};
+    std::unordered_map<int, int> bracket_open_map{};
+    std::unordered_map<int, int> bracket_close_map{};
 
     void cursor_pos_increment () {
         if (cursor_pos == memory_limit) {
@@ -62,7 +64,7 @@ private:
             cursor_pos -= 1;
         }
     }
- 
+
     void memory_increment () {
         if (memory[cursor_pos] == memory_num_limit) {
             memory[cursor_pos] = 0;
@@ -80,14 +82,14 @@ private:
     }
 
     void bracket_open () {
-        bracket_stashs.push_back(program_pos);
+        if (memory[cursor_pos] == 0) {
+            program_pos = bracket_open_map[program_pos];
+        }
     }
 
     void bracket_close () {
-        if (memory[cursor_pos] == 0) {
-            bracket_stashs.pop_back();
-        } else {
-            program_pos = bracket_stashs.back();  // jump
+        if (memory[cursor_pos] != 0) {
+            program_pos = bracket_close_map[program_pos];
         }
     }
 
@@ -99,35 +101,37 @@ private:
     void memory_input_char () {
         // 入力文字がないとき
         if (inputs.empty()) {
-            // 入力文字がEOFまで行ったとき
-            if (!(std::cin >> inputs)) {
-                // 入力文字の中身がなく、EOFの時
-                if (inputs.empty() && std::cin.eof()) {
-                    throw InputisNothing();
-                }
+            std::getline(std::cin, inputs);
+            // 入力文字の中身がなく、EOFの時
+            if (inputs.empty() && std::cin.eof()) {
+                throw InputisNothing();
             }
 
-        memory[cursor_pos] = static_cast<int>(inputs.back());
-        inputs.pop_back();
+        memory[cursor_pos] = static_cast<int>(inputs.front());
+        inputs.erase(0);
         }
     }
 
 public:
-    BrainFuck(std::string n) : program(n) {
+    explicit BrainFuck(const std::string& n) : program(n) {
         // [と]の数があっているか確認
         int bracket_match = 0;
+        std::vector<int> bracket_stash{};
 
-        for (int i=0; i == program.length(); i++) {
-            switch (program[i])
-            {
+        for (int i=0; i < program.length(); i++) {
+            switch (program[i]) {
             case '[':
                 bracket_match += 1;
+                bracket_stash.push_back(i);
                 break;
             case ']':
                 bracket_match -= 1;
                 if (bracket_match < 0) {
                     throw BracketNotMatch();  // 例えば']['みたいな時
                 }
+                bracket_open_map.emplace(bracket_stash.back(), i);
+                bracket_close_map.emplace(i, bracket_stash.back());
+                bracket_stash.pop_back();
                 break;
             default:
                 break;
@@ -181,7 +185,7 @@ int main() {
         // 端末(キーボード)からの実行時
         std::cout << ">>> ";
     }
-    std::cin >> input;
+    std::getline(std::cin, input);
 
     BrainFuck brain = BrainFuck(input);
     brain.execute();
