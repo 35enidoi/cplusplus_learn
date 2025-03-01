@@ -4,6 +4,7 @@
 #include <vector>
 #include <limits>
 #include <utility>
+#include <array>
 
 struct ReversiPos {
     unsigned char x_size;
@@ -22,15 +23,25 @@ struct ReversiPos {
 
 class Reversi {
 private:
-    const bool white = false;
-    const bool black = true;
+    const std::array<std::pair<int, int>, 8> ROTATE = {
+        std::make_pair(-1, 1), {0, 1}, {1, 1}, {-1, 0}, {1, 0}, {-1, -1}, {0, -1}, {-1, -1}
+    };
     unsigned char x = 0;
     unsigned char y = 0;
     std::vector<bool> valid_spaces{};
+    std::vector<bool> white_stones{};
     std::vector<bool> black_stones{};
 
+private:
+    void set_stone(ReversiPos a, bool color);
+
 public:
-    void set_size(unsigned char _x, unsigned char _y);
+    const bool WHITE = false;
+    const bool BLACK = true;
+
+    void init_set_size(unsigned char _x, unsigned char _y);
+
+    void init_stone();
 
     bool is_valid(ReversiPos a);
 

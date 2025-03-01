@@ -24,11 +24,36 @@ int ReversiPos::to_num() {
 
 // Reversi
 
+// private
+
+void Reversi::set_stone(ReversiPos a ,bool color) {
+    // todo
+}
+
 // public
 
-void Reversi::set_size(unsigned char _x, unsigned char _y) {
+void Reversi::init_set_size(unsigned char _x, unsigned char _y) {
     x = _x;
     y = _y;
+    valid_spaces.clear();
+    for (int i; i <= y; i++) {
+        for (int r; r <= x; r++) {
+            valid_spaces.push_back(true);
+        }
+    }
+}
+
+void Reversi::init_stone() {
+    if (x > 4 and y > 4) {
+        int x_center = x / 2;
+        int y_center = y / 2;
+
+        ReversiPos hidariue(x, y, x_center, y_center), migiue(x, y, x_center+1, y_center), hidarisita(x, y, x_center, y_center+1), migisita(x, y, x_center+1, y_center+1);
+        set_stone(hidariue, WHITE);
+        set_stone(migiue, BLACK);
+        set_stone(hidarisita, BLACK);
+        set_stone(migisita, WHITE);
+    }
 }
 
 bool Reversi::is_valid(ReversiPos a) {
