@@ -32,12 +32,11 @@ private:
     std::vector<bool> white_stones{};
     std::vector<bool> black_stones{};
 
-private:
-    void set_stone(ReversiPos a, bool color);
-
 public:
     const bool WHITE = false;
     const bool BLACK = true;
+
+    void set_stone(ReversiPos a, bool color);
 
     void init_set_size(unsigned char _x, unsigned char _y);
 

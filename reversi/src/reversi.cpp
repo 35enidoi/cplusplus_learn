@@ -24,13 +24,11 @@ int ReversiPos::to_num() {
 
 // Reversi
 
-// private
+// public
 
 void Reversi::set_stone(ReversiPos a ,bool color) {
     // todo
 }
-
-// public
 
 void Reversi::init_set_size(unsigned char _x, unsigned char _y) {
     x = _x;
