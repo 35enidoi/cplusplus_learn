@@ -14,4 +14,4 @@ public:
     const char* what() const noexcept override;
 };
 
-#endif
+#endif // REVERSI_EXCEPTION_H
