@@ -147,10 +147,10 @@ void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
             hidarisita = create_reversipos(x_center, y_center + 1),
             migisita = create_reversipos(x_center + 1, y_center + 1);
 
-        set_stone(hidariue, WHITE);
-        set_stone(migiue, BLACK);
-        set_stone(hidarisita, BLACK);
-        set_stone(migisita, WHITE);
+        put_stone(hidariue, WHITE);
+        put_stone(migiue, BLACK);
+        put_stone(hidarisita, BLACK);
+        put_stone(migisita, WHITE);
     }
 }
 
