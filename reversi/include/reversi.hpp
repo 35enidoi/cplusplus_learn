@@ -12,6 +12,8 @@ struct ReversiPos {
     unsigned char x;
     unsigned char y;
 
+    ReversiPos();
+
     ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned char _x, unsigned char _y);
 
     std::pair<unsigned char, unsigned char> size();

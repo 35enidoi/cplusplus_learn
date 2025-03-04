@@ -5,6 +5,8 @@
 
 // ReversiPos
 
+ReversiPos::ReversiPos() : x_size(0), y_size(0), x(0), y(0) {};
+
 ReversiPos::ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned char _x, unsigned char _y)
     : x_size(_x_size), y_size(_y_size), x(_x), y(_y) {
     if (_x_size <= _x)
@@ -136,6 +138,8 @@ void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
     black_stones.resize(y * x, false);
     white_stones.clear();
     white_stones.resize(y * x, false);
+    black_valid_positions.clear();
+    white_valid_positions.clear();
 
     if (x >= 4 and y >= 4) {
         int x_center = (x / 2) - 1;
