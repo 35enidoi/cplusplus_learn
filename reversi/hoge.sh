@@ -1,0 +1,1 @@
+g++ ./src/*.cpp -Wall -Wextra -Iinclude -o reversi.exe
