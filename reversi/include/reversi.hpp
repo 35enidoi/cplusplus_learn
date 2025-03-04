@@ -37,6 +37,8 @@ private:
     std::vector<bool> valid_spaces{};
     std::vector<bool> white_stones{};
     std::vector<bool> black_stones{};
+    std::vector<ReversiPos> white_valid_positions{};
+    std::vector<ReversiPos> black_valid_positions{};
 
     void reverse_stone(ReversiPos a);
 
@@ -50,9 +52,14 @@ private:
 
     void put_stone(ReversiPos a, bool color);
 
+    void stone_valid_all_check();
+
 public:
     const bool WHITE = false;
     const bool BLACK = true;
+
+    const std::vector<ReversiPos> &black_valid_pos = black_valid_positions;
+    const std::vector<ReversiPos> &white_valid_pos = white_valid_positions;
 
     explicit Reversi(const unsigned char &x_size, const unsigned char &y_size);
 
@@ -61,6 +68,8 @@ public:
     void set_stone(ReversiPos a, bool color);
 
     ReversiPos create_reversipos(unsigned char _x, unsigned char _y) const;
+
+    ReversiPos create_reversipos_fromint(unsigned int a) const;
 
     std::string visualize() const;
 };

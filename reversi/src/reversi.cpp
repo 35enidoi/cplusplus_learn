@@ -123,6 +123,23 @@ void Reversi::put_stone(ReversiPos a, bool color) {
     (color ? black_stones : white_stones)[a.to_num()] = true;
 }
 
+void Reversi::stone_valid_all_check() {
+    white_valid_positions.clear();
+    black_valid_positions.clear();
+
+    ReversiPos pos{};
+    for (unsigned int i = 0; i < valid_spaces.size(); i++) {
+        pos = create_reversipos_fromint(i);
+        if (valid_spaces[i]) {
+            if (get_stone_num(pos.x, pos.y, WHITE).size() > 0) {
+                white_valid_positions.push_back(pos);
+            } else if (get_stone_num(pos.x, pos.y, BLACK).size() > 0) {
+                black_valid_positions.push_back(pos);
+            }
+        }
+    }
+}
+
 // public
 
 Reversi::Reversi(const unsigned char &x_size, const unsigned char &y_size) {
@@ -155,6 +172,8 @@ void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
         put_stone(migiue, BLACK);
         put_stone(hidarisita, BLACK);
         put_stone(migisita, WHITE);
+
+        stone_valid_all_check();
     }
 }
 
@@ -170,10 +189,17 @@ void Reversi::set_stone(ReversiPos a ,bool color) {
         reverse_stone(revpos);
     }
 
+    stone_valid_all_check();
 }
 
 ReversiPos Reversi::create_reversipos(unsigned char _x, unsigned char _y) const {
     return ReversiPos(x, y, _x, _y);
+}
+
+ReversiPos Reversi::create_reversipos_fromint(unsigned int a) const {
+    unsigned char _x = a % y;
+    unsigned char _y = a / y;
+    return create_reversipos(_x, _y);
 }
 
 std::string Reversi::visualize() const {
