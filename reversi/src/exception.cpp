@@ -1,10 +1,10 @@
 #include "exception.hpp"
 
-// SizeOver
+ReversiException::BaseReversiException::BaseReversiException(const std::string &msg)
+: std::runtime_error(msg) {};
 
-SizeOver::SizeOver(const bool& x_or_y, const unsigned char& _limit, const unsigned char& _over) : x_y(x_or_y), limit(_limit), over(_over) {}
+ReversiException::SizeOver::SizeOver(bool x_y, int limit, int over)
+: BaseReversiException(std::string(x_y ? "y" : "x") + " limit exceeded.  limit: " + std::to_string(limit) + ", size: " + std::to_string(over)) {};
 
-const char* SizeOver::what() const noexcept{
-    std::string text = (x_y ? 'x' : 'y') + " size overed. size: " + std::to_string(limit) + " over: " + std::to_string(over);
-    return text.c_str();
-}
+ReversiException::SetStoneInvalidPos::SetStoneInvalidPos(unsigned int x, unsigned int y)
+: BaseReversiException("Stone has already placed in place. place: (" + std::to_string(x) + "x" + std::to_string(y) + ")") {};

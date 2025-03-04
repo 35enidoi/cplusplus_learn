@@ -1,17 +1,24 @@
 #ifndef REVERSI_EXCEPTION_H
 #define REVERSI_EXCEPTION_H
 
+
 #include <stdexcept>
 
-class SizeOver : public std::exception {
-private:
-    bool x_y;
-    unsigned char limit;
-    unsigned char over;
-public:
-    explicit SizeOver(const bool& _color, const unsigned char& _limit, const unsigned char& _over);
+namespace ReversiException {
+    class BaseReversiException : public std::runtime_error {
+    public:
+        BaseReversiException(const std::string& msg);
+    };
 
-    const char* what() const noexcept override;
-};
+    class SizeOver : public BaseReversiException {
+    public:
+        SizeOver(bool x_y, int limit, int over);
+    };
+
+    class SetStoneInvalidPos : public BaseReversiException {
+    public:
+        SetStoneInvalidPos(unsigned int x, unsigned int y);
+    };
+}
 
 #endif // REVERSI_EXCEPTION_H

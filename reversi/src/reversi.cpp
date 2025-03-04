@@ -6,7 +6,14 @@
 // ReversiPos
 
 ReversiPos::ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned char _x, unsigned char _y)
-    : x_size(_x_size), y_size(_y_size), x(_x), y(_y) {}
+    : x_size(_x_size), y_size(_y_size), x(_x), y(_y) {
+    if (_x_size <= _x)
+    {
+        throw ReversiException::SizeOver(false, _x_size, _x);
+        } else if (_y_size <= _y) {
+            throw ReversiException::SizeOver(true, y_size, _y);
+        }
+    }
 
 std::pair<unsigned char, unsigned char> ReversiPos::size() {
     return std::make_pair(x_size, y_size);
@@ -20,33 +27,126 @@ int ReversiPos::to_num() {
     return x + (y * x_size);
 }
 
+std::string ReversiPos::visualize() const {
+    std::string return_string = "size: " + std::to_string(x_size) + "x" + std::to_string(y_size) + "\n";
+    return_string += "pos: " + std::to_string(x) + "x" + std::to_string(y) + "\n";
+
+    for (int _y = 0; _y < y_size; _y++)
+    {
+        for (int _x = 0; _x < x_size; _x++)
+        {
+            if (_x == x && _y == y)
+            {
+                return_string += "+";
+            } else {
+                return_string += "-";
+            }
+
+        }
+
+        return_string += "\n";
+    }
+
+    return return_string;
+}
+
 // class
 
 // Reversi
 
-// public
+// private
 
-void Reversi::set_stone(ReversiPos a ,bool color) {
-    // todo
-}
-
-void Reversi::init_set_size(unsigned char _x, unsigned char _y) {
-    x = _x;
-    y = _y;
-    valid_spaces.clear();
-    for (int i; i <= y; i++) {
-        for (int r; r <= x; r++) {
-            valid_spaces.push_back(true);
-        }
+void Reversi::reverse_stone(ReversiPos a) {
+    if (black_stones.at(a.to_num())) {
+        black_stones[a.to_num()] = false;
+        white_stones[a.to_num()] = true;
+    } else if (white_stones.at(a.to_num())) {
+        white_stones[a.to_num()] = false;
+        black_stones[a.to_num()] = true;
     }
 }
 
-void Reversi::init_stone() {
-    if (x > 4 and y > 4) {
-        int x_center = x / 2;
-        int y_center = y / 2;
+int Reversi::set_stone_topos(int _x, int _y) const noexcept {
+    return x * _y + _x;
+}
 
-        ReversiPos hidariue(x, y, x_center, y_center), migiue(x, y, x_center+1, y_center), hidarisita(x, y, x_center, y_center+1), migisita(x, y, x_center+1, y_center+1);
+bool Reversi::stone_x_pos_is_valid(int _x) const noexcept {
+    return 0 <= _x && _x < x;
+}
+
+bool Reversi::stone_y_pos_is_valid(int _y) const noexcept {
+    return 0 <= _y && _y < y;
+}
+
+std::vector<ReversiPos> Reversi::get_stone_num(unsigned char _x, unsigned char _y, bool color) const {
+    std::vector<bool> enemy_stones = color ? white_stones : black_stones;
+    std::vector<bool> own_stones = color ? black_stones : white_stones;
+
+    std::vector<ReversiPos> return_heap{};
+    std::vector<ReversiPos> return_positions{};
+
+    int i = 1;
+    int x_pos = 0;
+    int y_pos = 0;
+    for (const auto& [x_rotate, y_rotate] : ROTATE) {
+        i = 1;
+        return_heap.clear();
+        while (true) {
+            x_pos = _x + x_rotate * i;
+            y_pos = _y + y_rotate * i;
+            if (!stone_x_pos_is_valid(x_pos) or !stone_y_pos_is_valid(y_pos)) {
+                // 石の場所が不正の時
+                break;
+            } else if (!enemy_stones.at(set_stone_topos(x_pos, y_pos))) {
+                // 石の場所が敵の石ではないとき
+                if (return_heap.size() > 0 && own_stones.at(set_stone_topos(x_pos, y_pos))) {
+                    // 石の場所が自分の石であり、heap内に石があるとき。
+                    return_positions.insert(return_positions.end(), return_heap.begin(), return_heap.end()); // 合成
+                }
+                break;
+            } else {
+                // 石の場所が適正で敵の石の時
+                return_heap.push_back(create_reversipos(x_pos, y_pos));
+            }
+
+            i++;
+        }
+    }
+
+    return return_positions;
+}
+
+void Reversi::put_stone(ReversiPos a, bool color) {
+    valid_spaces[a.to_num()] = false;
+    (color ? black_stones : white_stones)[a.to_num()] = true;
+}
+
+// public
+
+Reversi::Reversi(const unsigned char &x_size, const unsigned char &y_size) {
+    resize(x_size, y_size);
+}
+
+void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
+    x = x_size;
+    y = y_size;
+    valid_spaces.clear();
+    valid_spaces.resize(y * x, true);
+    black_stones.clear();
+    black_stones.resize(y * x, false);
+    white_stones.clear();
+    white_stones.resize(y * x, false);
+
+    if (x >= 4 and y >= 4) {
+        int x_center = (x / 2) - 1;
+        int y_center = (y / 2) - 1;
+
+        ReversiPos
+            hidariue = create_reversipos(x_center, y_center),
+            migiue = create_reversipos(x_center + 1, y_center),
+            hidarisita = create_reversipos(x_center, y_center + 1),
+            migisita = create_reversipos(x_center + 1, y_center + 1);
+
         set_stone(hidariue, WHITE);
         set_stone(migiue, BLACK);
         set_stone(hidarisita, BLACK);
@@ -54,15 +154,41 @@ void Reversi::init_stone() {
     }
 }
 
-bool Reversi::is_valid(ReversiPos a) {
-    return valid_spaces[a.to_num()];
+void Reversi::set_stone(ReversiPos a ,bool color) {
+    if (!valid_spaces[a.to_num()]) {
+        throw ReversiException::SetStoneInvalidPos(a.x, a.y);
+    }
+    put_stone(a, color);
+
+    auto [_x, _y] = a.pos();
+
+    for (const ReversiPos revpos : get_stone_num(_x, _y, color)) {
+        reverse_stone(revpos);
+    }
+
 }
 
-ReversiPos Reversi::create_reversipos(unsigned char _x, unsigned char _y) {
-    if (x < _x) {
-        throw SizeOver(false, x, _x);
-    } else if (y < _y) {
-        throw SizeOver(true, y, _y);
-    }
+ReversiPos Reversi::create_reversipos(unsigned char _x, unsigned char _y) const {
     return ReversiPos(x, y, _x, _y);
+}
+
+std::string Reversi::visualize() const {
+    std::string return_string = "black: b, white: w\n";
+    for (unsigned int i = 0; i < valid_spaces.size(); i++) {
+        if (valid_spaces.at(i)) {
+            return_string += "-";
+        } else {
+            if (black_stones.at(i)) {
+                return_string += "b";
+            } else if (white_stones.at(i)) {
+                return_string += "w";
+            }
+        }
+
+        if (i != 0 && ((i + 1)%x == 0)) {
+            return_string += "\n";
+        }
+    }
+
+    return return_string;
 }
