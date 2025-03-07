@@ -103,7 +103,9 @@ std::vector<ReversiPos> Reversi::get_stone_num(unsigned char _x, unsigned char _
                 // 石の場所が敵の石ではないとき
                 if (return_heap.size() > 0 && own_stones.at(set_stone_topos(x_pos, y_pos))) {
                     // 石の場所が自分の石であり、heap内に石があるとき。
-                    return_positions.insert(return_positions.end(), return_heap.begin(), return_heap.end()); // 合成
+                    for (auto a : return_heap) {
+                        return_positions.push_back(a);  // 合成
+                    }
                 }
                 break;
             } else {
@@ -127,9 +129,8 @@ void Reversi::stone_valid_all_check() {
     white_valid_positions.clear();
     black_valid_positions.clear();
 
-    ReversiPos pos{};
     for (unsigned int i = 0; i < valid_spaces.size(); i++) {
-        pos = create_reversipos_fromint(i);
+        ReversiPos pos = create_reversipos_fromint(i);
         if (valid_spaces[i]) {
             if (get_stone_num(pos.x, pos.y, WHITE).size() > 0) {
                 white_valid_positions.push_back(pos);

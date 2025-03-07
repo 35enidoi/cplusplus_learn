@@ -7,10 +7,10 @@
 #include <string>
 
 struct ReversiPos {
-    unsigned char x_size;
-    unsigned char y_size;
-    unsigned char x;
-    unsigned char y;
+    const unsigned char x_size;
+    const unsigned char y_size;
+    const unsigned char x;
+    const unsigned char y;
 
     ReversiPos();
 
