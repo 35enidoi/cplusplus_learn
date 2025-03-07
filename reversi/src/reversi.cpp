@@ -12,9 +12,9 @@ ReversiPos::ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned ch
     if (_x_size <= _x)
     {
         throw ReversiException::SizeOver(false, _x_size, _x);
-        } else if (_y_size <= _y) {
-            throw ReversiException::SizeOver(true, y_size, _y);
-        }
+    } else if (_y_size <= _y) {
+        throw ReversiException::SizeOver(true, y_size, _y);
+    }
     }
 
 std::pair<unsigned char, unsigned char> ReversiPos::size() {
