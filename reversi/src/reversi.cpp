@@ -17,19 +17,19 @@ ReversiPos::ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned ch
     }
     }
 
-std::pair<unsigned char, unsigned char> ReversiPos::size() {
+std::pair<unsigned char, unsigned char> ReversiPos::size() const noexcept {
     return std::make_pair(x_size, y_size);
 }
 
-std::pair<unsigned char, unsigned char> ReversiPos::pos() {
+std::pair<unsigned char, unsigned char> ReversiPos::pos() const noexcept {
     return std::make_pair(x, y);
 }
 
-int ReversiPos::to_num() {
+int ReversiPos::to_num() const noexcept {
     return x + (y * x_size);
 }
 
-std::string ReversiPos::visualize() const {
+std::string ReversiPos::visualize() const noexcept {
     std::string return_string = "size: " + std::to_string(x_size) + "x" + std::to_string(y_size) + "\n";
     return_string += "pos: " + std::to_string(x) + "x" + std::to_string(y) + "\n";
 
@@ -142,7 +142,7 @@ void Reversi::stone_valid_all_check() {
 
 // public
 
-Reversi::Reversi(const unsigned char &x_size, const unsigned char &y_size) {
+Reversi::Reversi(const unsigned char x_size, const unsigned char y_size) {
     resize(x_size, y_size);
 }
 
@@ -202,7 +202,7 @@ ReversiPos Reversi::create_reversipos_fromint(unsigned int a) const {
     return create_reversipos(_x, _y);
 }
 
-std::string Reversi::visualize() const {
+std::string Reversi::visualize() const noexcept {
     std::string return_string = "black: b, white: w\n";
     for (unsigned int i = 0; i < valid_spaces.size(); i++) {
         if (valid_spaces.at(i)) {

@@ -16,13 +16,13 @@ struct ReversiPos {
 
     ReversiPos(unsigned char _x_size, unsigned char _y_size, unsigned char _x, unsigned char _y);
 
-    std::pair<unsigned char, unsigned char> size();
+    std::pair<unsigned char, unsigned char> size() const noexcept;
 
-    std::pair<unsigned char, unsigned char> pos();
+    std::pair<unsigned char, unsigned char> pos() const noexcept;
 
-    int to_num();
+    int to_num() const noexcept;
 
-    std::string visualize() const;
+    std::string visualize() const noexcept;
 };
 
 class Reversi {
@@ -61,7 +61,7 @@ public:
     const std::vector<ReversiPos> &black_valid_pos = black_valid_positions;
     const std::vector<ReversiPos> &white_valid_pos = white_valid_positions;
 
-    explicit Reversi(const unsigned char &x_size, const unsigned char &y_size);
+    explicit Reversi(const unsigned char x_size, const unsigned char y_size);
 
     void resize(const unsigned char x_size, const unsigned char y_size);
 
@@ -71,7 +71,7 @@ public:
 
     ReversiPos create_reversipos_fromint(unsigned int a) const;
 
-    std::string visualize() const;
+    std::string visualize() const noexcept;
 };
 
 #endif // REVERSI_H
