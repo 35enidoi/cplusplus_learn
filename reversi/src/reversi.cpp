@@ -182,6 +182,9 @@ void Reversi::set_stone(ReversiPos a ,bool color) {
     if (!valid_spaces[a.to_num()]) {
         throw ReversiException::SetStoneInvalidPos(a.x, a.y);
     }
+
+    _movecount += 1;
+
     put_stone(a, color);
 
     auto [_x, _y] = a.pos();
@@ -222,4 +225,16 @@ std::string Reversi::visualize() const noexcept {
     }
 
     return return_string;
+}
+
+bool Reversi::is_finish() const noexcept {
+    return !is_white_placeable() && !is_black_placeable();
+}
+
+bool Reversi::is_black_placeable() const noexcept {
+    return black_valid_positions.size() != 0;
+}
+
+bool Reversi::is_white_placeable() const noexcept {
+    return white_valid_positions.size() != 0;
 }

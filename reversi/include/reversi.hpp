@@ -32,6 +32,7 @@ private:
                       {-1, 0},         {1, 0},
                       {-1, -1},{0, -1}, {1, -1}
     };
+    unsigned int _movecount = 0;
     unsigned char x = 0;
     unsigned char y = 0;
     std::vector<bool> valid_spaces{};
@@ -55,6 +56,7 @@ private:
     void stone_valid_all_check();
 
 public:
+    const unsigned int &movecount = _movecount;
     const bool WHITE = false;
     const bool BLACK = true;
 
@@ -72,6 +74,12 @@ public:
     ReversiPos create_reversipos_fromint(unsigned int a) const;
 
     std::string visualize() const noexcept;
+
+    bool is_finish() const noexcept;
+
+    bool is_black_placeable() const noexcept;
+
+    bool is_white_placeable() const noexcept;
 };
 
 #endif // REVERSI_H
