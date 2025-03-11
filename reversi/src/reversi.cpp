@@ -122,7 +122,7 @@ std::vector<ReversiPos> Reversi::get_stone_num(unsigned char _x, unsigned char _
 
 void Reversi::put_stone(ReversiPos a, bool color) {
     valid_spaces[a.to_num()] = false;
-    (color ? black_stones : white_stones)[a.to_num()] = true;
+    (color ? black_stones : white_stones).at(a.to_num()) = true;
 }
 
 void Reversi::stone_valid_all_check() {
@@ -131,7 +131,7 @@ void Reversi::stone_valid_all_check() {
 
     for (unsigned int i = 0; i < valid_spaces.size(); i++) {
         ReversiPos pos = create_reversipos_fromint(i);
-        if (valid_spaces[i]) {
+        if (valid_spaces.at(i)) {
             if (get_stone_num(pos.x, pos.y, WHITE).size() > 0) {
                 white_valid_positions.push_back(pos);
             } else if (get_stone_num(pos.x, pos.y, BLACK).size() > 0) {
