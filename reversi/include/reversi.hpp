@@ -35,6 +35,7 @@ private:
     unsigned int _movecount = 0;
     unsigned char x = 0;
     unsigned char y = 0;
+    bool next = true;  // BLACK
     std::vector<bool> valid_spaces{};
     std::vector<bool> white_stones{};
     std::vector<bool> black_stones{};
@@ -57,6 +58,7 @@ private:
 
 public:
     const unsigned int &movecount = _movecount;
+    const bool &NEXT = next;
     const bool WHITE = false;
     const bool BLACK = true;
 

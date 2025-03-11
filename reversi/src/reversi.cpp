@@ -194,6 +194,14 @@ void Reversi::set_stone(ReversiPos a ,bool color) {
     }
 
     stone_valid_all_check();
+
+    if (color == BLACK ? is_white_placeable() : is_black_placeable()) {
+        // 相手が石を置けるとき
+        next = !color;
+    } else {
+        // 相手が石を置けない時
+        next = color;
+    }
 }
 
 ReversiPos Reversi::create_reversipos(unsigned char _x, unsigned char _y) const {
