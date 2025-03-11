@@ -19,6 +19,11 @@ namespace ReversiException {
     public:
         SetStoneInvalidPos(unsigned int x, unsigned int y);
     };
+
+    class SetStoneColorNotMatch : public BaseReversiException {
+    public:
+        SetStoneColorNotMatch(bool next, bool color);
+    };
 }
 
 #endif // REVERSI_EXCEPTION_H

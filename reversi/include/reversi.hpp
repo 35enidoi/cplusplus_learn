@@ -69,7 +69,7 @@ public:
 
     void resize(const unsigned char x_size, const unsigned char y_size);
 
-    void set_stone(ReversiPos a, bool color);
+    void set_stone(ReversiPos a, bool color, bool force = false);
 
     ReversiPos create_reversipos(unsigned char _x, unsigned char _y) const;
 

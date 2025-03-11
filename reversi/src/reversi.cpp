@@ -178,9 +178,12 @@ void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
     }
 }
 
-void Reversi::set_stone(ReversiPos a ,bool color) {
+void Reversi::set_stone(ReversiPos a ,bool color, bool force) {
     if (!valid_spaces[a.to_num()]) {
         throw ReversiException::SetStoneInvalidPos(a.x, a.y);
+    }
+    if (!force && next != color) {
+        throw ReversiException::SetStoneColorNotMatch(next, color);
     }
 
     _movecount += 1;
