@@ -57,7 +57,7 @@ private:
     void stone_valid_all_check();
 
 public:
-    const unsigned int &movecount = _movecount;
+    const unsigned int &MOVECOUNT = _movecount;
     const bool &NEXT = next;
     const bool WHITE = false;
     const bool BLACK = true;
