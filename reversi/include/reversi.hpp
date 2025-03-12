@@ -2,7 +2,6 @@
 #define REVERSI_H
 
 #include <vector>
-#include <utility>
 #include <array>
 #include <string>
 
