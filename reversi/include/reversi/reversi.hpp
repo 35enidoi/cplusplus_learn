@@ -1,6 +1,7 @@
 #ifndef REVERSI_H
 #define REVERSI_H
 
+
 #include <vector>
 #include <array>
 #include <string>

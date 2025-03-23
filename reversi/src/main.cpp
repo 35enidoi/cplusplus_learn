@@ -1,5 +1,6 @@
 #include "reversi/reversi.hpp"
 #include "reversi/util.hpp"
+
 #include <iostream>
 
 
