@@ -1,5 +1,5 @@
-#include "reversi.hpp"
-#include "exception.hpp"
+#include "reversi/reversi.hpp"
+#include "reversi/exception.hpp"
 
 // structure
 

@@ -1,4 +1,4 @@
-#include "util.hpp"
+#include "reversi/util.hpp"
 
 #include <random>
 

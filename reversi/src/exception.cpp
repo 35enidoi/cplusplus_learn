@@ -1,4 +1,4 @@
-#include "exception.hpp"
+#include "reversi/exception.hpp"
 
 ReversiException::BaseReversiException::BaseReversiException(const std::string &msg)
 : std::runtime_error(msg) {};
