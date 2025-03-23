@@ -11,3 +11,6 @@ ReversiException::SetStoneInvalidPos::SetStoneInvalidPos(unsigned int x, unsigne
 
 ReversiException::SetStoneColorNotMatch::SetStoneColorNotMatch(bool next, bool color)
 : BaseReversiException("wrong stone color. next: " + std::string((next ? "BLACK" : "WHITE")) + ", color: " + (color ? "BLACK" : "WHITE")) {};
+
+ReversiException::AlgorithmSelectNoStone::AlgorithmSelectNoStone()
+: BaseReversiException("no stone positions.") {};

@@ -24,6 +24,11 @@ namespace ReversiException {
     public:
         SetStoneColorNotMatch(bool next, bool color);
     };
+
+    class AlgorithmSelectNoStone : public BaseReversiException {
+    public:
+        AlgorithmSelectNoStone();
+    };
 }
 
 #endif // REVERSI_EXCEPTION_H

@@ -1,5 +1,6 @@
 #include "reversi/reversi.hpp"
 #include "reversi/util.hpp"
+#include "reversi/algorithms.hpp"
 
 #include <iostream>
 
@@ -12,10 +13,9 @@ int main() {
         n += 1;
 
         while (!a.is_finish()) {
-            auto valid_stones = (a.NEXT ? a.black_valid_pos : a.white_valid_pos);
-            auto hoge = ReversiUtil::randint(0, valid_stones.size());
-            auto stone_pos = valid_stones.at(hoge);
-        
+            std::vector<ReversiPos> valid_stones = (a.NEXT ? a.black_valid_pos : a.white_valid_pos);
+            ReversiPos stone_pos = ReversiAlgorithms::RandomSelect::static_select(valid_stones);
+
             a.set_stone(stone_pos, a.NEXT);
         }
 
