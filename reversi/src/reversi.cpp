@@ -144,8 +144,34 @@ void Reversi::stone_valid_all_check() {
 
 // public
 
-Reversi::Reversi(const unsigned char x_size, const unsigned char y_size) {
+Reversi::Reversi(const unsigned char x_size, const unsigned char y_size, std::optional<std::vector<std::pair<ReversiPos, bool>>> init) {
     resize(x_size, y_size);
+    if (init.has_value()) {
+        // 初期値がある場合
+        for (const auto& pos : init.value()) {
+            put_stone(pos.first, pos.second);
+        }
+    } else {
+        // 初期値がない場合
+        if (x >= 4 and y >= 4) {
+            // 盤面が4x4以上の時のみ初期化
+            int x_center = (x / 2) - 1;
+            int y_center = (y / 2) - 1;
+    
+            ReversiPos
+                hidariue = create_reversipos(x_center, y_center),
+                migiue = create_reversipos(x_center + 1, y_center),
+                hidarisita = create_reversipos(x_center, y_center + 1),
+                migisita = create_reversipos(x_center + 1, y_center + 1);
+    
+            put_stone(hidariue, WHITE);
+            put_stone(migiue, BLACK);
+            put_stone(hidarisita, BLACK);
+            put_stone(migisita, WHITE);
+    
+            stone_valid_all_check();
+        }
+    }
 }
 
 void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
@@ -159,24 +185,6 @@ void Reversi::resize(const unsigned char x_size, const unsigned char y_size) {
     white_stones.resize(y * x, false);
     black_valid_positions.clear();
     white_valid_positions.clear();
-
-    if (x >= 4 and y >= 4) {
-        int x_center = (x / 2) - 1;
-        int y_center = (y / 2) - 1;
-
-        ReversiPos
-            hidariue = create_reversipos(x_center, y_center),
-            migiue = create_reversipos(x_center + 1, y_center),
-            hidarisita = create_reversipos(x_center, y_center + 1),
-            migisita = create_reversipos(x_center + 1, y_center + 1);
-
-        put_stone(hidariue, WHITE);
-        put_stone(migiue, BLACK);
-        put_stone(hidarisita, BLACK);
-        put_stone(migisita, WHITE);
-
-        stone_valid_all_check();
-    }
 }
 
 void Reversi::set_stone(ReversiPos a ,bool color, bool force) {

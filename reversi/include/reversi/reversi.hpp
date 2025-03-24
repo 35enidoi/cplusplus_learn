@@ -2,6 +2,7 @@
 #define REVERSI_H
 
 
+#include <optional>
 #include <vector>
 #include <array>
 #include <string>
@@ -65,7 +66,7 @@ public:
     const std::vector<ReversiPos> &black_valid_pos = black_valid_positions;
     const std::vector<ReversiPos> &white_valid_pos = white_valid_positions;
 
-    explicit Reversi(const unsigned char x_size, const unsigned char y_size);
+    explicit Reversi(const unsigned char x_size, const unsigned char y_size, std::optional<std::vector<std::pair<ReversiPos, bool>>> init = std::nullopt);
 
     void resize(const unsigned char x_size, const unsigned char y_size);
 
