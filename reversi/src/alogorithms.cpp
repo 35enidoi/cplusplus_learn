@@ -1,5 +1,8 @@
 #include "reversi/algorithms.hpp"
 
+#include "reversi/util.hpp"
+#include "reversi/exception.hpp"
+
 ReversiPos ReversiAlgorithms::RandomSelect::select(std::vector<ReversiPos> positions) {
     return ReversiAlgorithms::RandomSelect::static_select(positions);
 }

@@ -4,8 +4,6 @@
 #include <vector>
 
 #include "reversi/reversi.hpp"
-#include "reversi/util.hpp"
-#include "reversi/exception.hpp"
 
 namespace ReversiAlgorithms {
     class ABCReversiAlgorithms {
